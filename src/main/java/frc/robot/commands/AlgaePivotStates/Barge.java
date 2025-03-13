@@ -34,5 +34,5 @@ public class Barge extends Command {
   @Override
   public boolean isFinished() {
     return algaePivotSub.isAtSetpoint();
-  }
+  } 
 }

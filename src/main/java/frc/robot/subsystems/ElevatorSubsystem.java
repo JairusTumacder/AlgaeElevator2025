@@ -32,7 +32,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   // Motion Magic Variables
   private MotionMagicVoltage motionRequest;
-  private double setpoint; 
+  private double setpoint;
   private boolean pidOn;
 
   // outputs
@@ -52,7 +52,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     setpoint = getEncoder();
     output = 0;
     manualOutput = 0;
-    
+
     pidOn = false;
   }
 
@@ -131,16 +131,17 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // If pid is off, runs manual control
     // else{
-    //   output = deadzone(manualOutput);
+    // output = deadzone(manualOutput);
     // }
 
-    // Stops elevator if it hits bottom limit switch and is moving in the same direction
+    // Stops elevator if it hits bottom limit switch and is moving in the same
+    // direction
     if (getBottomLimitSwitch() && (output < 0 || elevatorMotor.getMotorVoltage().getValueAsDouble() < 0)) {
       output = 0;
       setpoint = 0;
     }
     // Sets setpoint to current encoder value if elevator hits top limit switch
-    else if (getTopLimitSwitch() && (output > 0 || elevatorMotor.getMotorVoltage().getValueAsDouble() > 0)){
+    else if (getTopLimitSwitch() && (output > 0 || elevatorMotor.getMotorVoltage().getValueAsDouble() > 0)) {
       setpoint = getEncoder();
     }
 
@@ -157,7 +158,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("[E] Bottom LS", getBottomLimitSwitch());
     SmartDashboard.putBoolean("[E] pidON", pidOn);
     SmartDashboard.putNumber("[E] FeedForward", motionRequest.FeedForward);
-    
+
     SmartDashboard.putNumber("[E] Stator Current", elevatorMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("[E] Supply Current", elevatorMotor.getSupplyCurrent().getValueAsDouble());
     SmartDashboard.putNumber("[E] Motor Voltage", elevatorMotor.getMotorVoltage().getValueAsDouble());
