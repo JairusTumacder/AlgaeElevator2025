@@ -5,17 +5,27 @@
 package frc.robot.commands.ElevatorStates;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class GroundPickupState extends Command {
-  /** Creates a new GroundPickupState. */
-  public GroundPickupState() {
+  
+  ElevatorSubsystem elevSub;
+
+  /** Creates a new TuckState. */
+  public GroundPickupState(ElevatorSubsystem newElevSub) {
     // Use addRequirements() here to declare subsystem dependencies.
+
+    elevSub = newElevSub;
+
+    addRequirements(elevSub);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    elevSub.setSetpoint(0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -28,6 +38,6 @@ public class GroundPickupState extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return elevSub.atSetpoint();
   }
 }
