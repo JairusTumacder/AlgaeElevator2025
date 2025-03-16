@@ -44,7 +44,7 @@ public class AlgaePivot extends SubsystemBase {
 
     setpoint = 0;
   }
-
+  // I Love MEN
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.quasistatic(direction);
 
@@ -54,38 +54,39 @@ public class AlgaePivot extends SubsystemBase {
     return sysIdRoutine.dynamic(direction);
   }
 
-  //returns if the limit switch activates or not (true or false)
-  public boolean getLimitSwitchValue(){
+  // returns if the limit switch activates or not (true or false)
+  public boolean getLimitSwitchValue() {
     return limitSwitch.get();
   }
 
-  //returns the algae pivot position (rotations)
-  public double getPositionValue(){
+  // returns the algae pivot position (rotations)
+  public double getPositionValue() {
     return algaePivot.getPosition().getValueAsDouble();
   }
 
-  //resets the position of the algae pivot encoder to 0
+  // resets the position of the algae pivot encoder to 0
   public void resetPosition() {
     algaePivot.setPosition(0);
   }
 
-  //runs the algae pivot motor to a position setpoint
+  // runs the algae pivot motor to a position setpoint
   public void toSetpoint(double newSetpoint) {
     setpoint = newSetpoint;
     algaePivot.setControl(motionControl.withPosition(setpoint));
   }
 
-  //returns if the motion magic on the algae pivot motor is at the setpoint
-  public boolean isAtSetpoint(){
+  // returns if the motion magic on the algae pivot motor is at the setpoint
+  public boolean isAtSetpoint() {
     return Math.abs(setpoint - getPositionValue()) <= AlgaePivotConstants.kTolerance;
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Algae Pivot Position", algaePivot.getPosition().getValueAsDouble());
-    SmartDashboard.putNumber("Algae Pivot Current", algaePivot.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("[A] Pivot Position", algaePivot.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber("[A] Pivot Current", algaePivot.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putBoolean("[A] Limit Switch", getLimitSwitchValue());
 
-    if(getLimitSwitchValue()){
+    if (getLimitSwitchValue()) {
       resetPosition();
     }
   }
