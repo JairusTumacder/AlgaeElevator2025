@@ -156,7 +156,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("[E] Top LS", getTopLimitSwitch());
     SmartDashboard.putBoolean("[E] Bottom LS", getBottomLimitSwitch());
     SmartDashboard.putBoolean("[E] pidON", pidOn);
-    SmartDashboard.putNumber("[E] FeedForward", motionRequest.FeedForward);
     
     SmartDashboard.putNumber("[E] Stator Current", elevatorMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("[E] Supply Current", elevatorMotor.getSupplyCurrent().getValueAsDouble());
