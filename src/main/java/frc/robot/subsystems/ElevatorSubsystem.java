@@ -127,12 +127,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // If pid is on, runs pid code to set output
     // if (pidOn) {
-    //   elevatorMotor.setControl(motionRequest.withPosition(setpoint));
+      elevatorMotor.setControl(motionRequest.withPosition(setpoint));
     // }
 
     // If pid is off, runs manual control
     // else{
-    output = deadzone(manualOutput);
+    // output = deadzone(manualOutput);
     // }
 
     // Stops elevator if it hits bottom limit switch and is moving in the same
