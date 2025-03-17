@@ -45,19 +45,19 @@ public class RobotContainer {
   private void configureBindings() {
     
 
-    d_controller.y().onTrue(new L2State(elevatorSub));
+    d_controller.y().onTrue(new L4State(elevatorSub));
     d_controller.a().onTrue(new TuckState(elevatorSub));
-    d_controller.x().onTrue(new L3State(elevatorSub));
+    // d_controller.x().onTrue(new L3State(elevatorSub));
     // d_controller.b().onTrue(new L2State(elevatorSub));
 
     d_controller.leftBumper().onTrue(new Tuck(algaePivotSub));
     // d_controller.rightBumper().onTrue(new Processor(algaePivotSub));
     // d_controller.a().onTrue(new Storage(algaePivotSub));
     // d_controller.b().onTrue(new Descore(algaePivotSub));
-    // d_controller.rightBumper().onTrue(new Barge(algaePivotSub));
+    d_controller.rightBumper().onTrue(new Barge(algaePivotSub));
 
-    // d_controller.x().whileTrue(new AlgaeIntake(algaeShooter));
-    // d_controller.b().onTrue(new AlgaeShoot(algaeShooter));
+    d_controller.x().whileTrue(new AlgaeIntake(algaeShooter));
+    d_controller.b().onTrue(new AlgaeShoot(algaeShooter));
 
     //SysId Routines
     // d_controller.leftBumper().onTrue(algaePivotSub.sysIdQuasistatic(SysIdRoutine.Direction.kForward));

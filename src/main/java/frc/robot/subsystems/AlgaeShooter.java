@@ -26,14 +26,16 @@ public class AlgaeShooter extends SubsystemBase {
       }
   }
 
-  public void checkMotorStall() {
+  public boolean checkMotorStall() {
       if (algaeMotor.getStatorCurrent().getValueAsDouble() > 20 && algaeMotor.get() < -0.08) {  //check the direction )    // replace with .getOutPutCurrent for sparks
           algaeMotor.set(0); // Stop the motor
           algaeMotor.setNeutralMode(NeutralModeValue.Brake);
           ballHeld = true;
+          return true;
       } else {
           ballHeld = false;
           algaeMotor.setNeutralMode(NeutralModeValue.Coast);
+          return false;
       }
   }
   public void stopIntake() {
@@ -49,7 +51,7 @@ public class AlgaeShooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-      checkMotorStall(); // Check if the motor is stalled
+    //   checkMotorStall(); // Check if the motor is stalled
     
       SmartDashboard.putBoolean("ballHeld", ballHeld); // Display if the ball is held
       SmartDashboard.putNumber("current", algaeMotor.getStatorCurrent().getValueAsDouble()); // replace with .getOutPutCurrent for sparks
