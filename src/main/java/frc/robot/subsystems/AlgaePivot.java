@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.units.VelocityUnit;
 import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -9,6 +10,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ReverseLimitSourceValue;
+import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
+import com.ctre.phoenix6.signals.ReverseLimitValue;
+import com.revrobotics.sim.SparkLimitSwitchSim;
+import com.revrobotics.spark.SparkLimitSwitch;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.LimitSwitchConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.LimitSwitchConfig.Type;
+
 import frc.robot.Constants.AlgaePivotConstants;
 
 import static edu.wpi.first.units.Units.Seconds;
@@ -23,12 +37,13 @@ public class AlgaePivot extends SubsystemBase {
   private MotionMagicVoltage motionControl;
   private SysIdRoutine sysIdRoutine;
   private VoltageOut voltageOut;
-  private DigitalInput limitSwitch;
   private double setpoint;
+  private SparkLimitSwitch limitSwitch;
 
-  public AlgaePivot() {
+  public AlgaePivot(SparkLimitSwitch ls) {
     algaePivot = new TalonFX(AlgaePivotConstants.kAlgaePivotID);
-    limitSwitch = new DigitalInput(AlgaePivotConstants.kLimitSwitchID);
+
+    limitSwitch = ls;
 
     algaePivot.getConfigurator().apply(AlgaePivotConstants.AlgaePivotConfiguration);
     algaePivot.getConfigurator().apply(AlgaePivotConstants.AlgaePivotMMConfiguration);
@@ -44,10 +59,9 @@ public class AlgaePivot extends SubsystemBase {
 
     setpoint = 0;
   }
-  // I Love MEN
+  
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.quasistatic(direction);
-
   }
 
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
@@ -56,7 +70,7 @@ public class AlgaePivot extends SubsystemBase {
 
   // returns if the limit switch activates or not (true or false)
   public boolean getLimitSwitchValue() {
-    return limitSwitch.get();
+    return limitSwitch.isPressed();
   }
 
   // returns the algae pivot position (rotations)
@@ -86,7 +100,7 @@ public class AlgaePivot extends SubsystemBase {
     SmartDashboard.putNumber("[A] Pivot Current", algaePivot.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putBoolean("[A] Limit Switch", getLimitSwitchValue());
 
-    if (getLimitSwitchValue()) {
+    if(getLimitSwitchValue()){
       resetPosition();
     }
   }

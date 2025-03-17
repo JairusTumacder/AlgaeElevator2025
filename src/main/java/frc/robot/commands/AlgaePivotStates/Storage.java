@@ -26,7 +26,7 @@ public class Storage extends Command {
   @Override
   public void execute() {}
 
-  // Called once the command ends or is interrupted.
+  // Called once the command ends or izxxxs interrupted.
   @Override
   public void end(boolean interrupted) {}
 

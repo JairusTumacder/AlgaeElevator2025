@@ -39,15 +39,16 @@ public class ElevatorSubsystem extends SubsystemBase {
   private double output;
   private double manualOutput;
 
+  //53 encoder counts is max height
   public ElevatorSubsystem() {
     elevatorMotor = new TalonFX(ElevatorConstants.LIFTID);
     topLimitSwitch = new DigitalInput(ElevatorConstants.UPPERLSID);
     bottomLimitSwitch = new DigitalInput(ElevatorConstants.BOTTOMLSID);
     motionRequest = new MotionMagicVoltage(0);
 
-    elevatorMotor.getConfigurator().apply(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
     elevatorMotor.getConfigurator().apply(ElevatorConstants.elevConfigs);
     elevatorMotor.getConfigurator().apply(ElevatorConstants.elevMMConfigs);
+    elevatorMotor.setNeutralMode(NeutralModeValue.Brake);
 
     setpoint = getEncoder();
     output = 0;
@@ -61,7 +62,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public boolean getTopLimitSwitch() {
-    return !topLimitSwitch.get();
+  return !topLimitSwitch.get();
   }
 
   public boolean getBottomLimitSwitch() {
@@ -125,13 +126,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     // If pid is on, runs pid code to set output
-    if (pidOn) {
-      elevatorMotor.setControl(motionRequest.withPosition(setpoint));
-    }
+    // if (pidOn) {
+    //   elevatorMotor.setControl(motionRequest.withPosition(setpoint));
+    // }
 
     // If pid is off, runs manual control
     // else{
-    // output = deadzone(manualOutput);
+    output = deadzone(manualOutput);
     // }
 
     // Stops elevator if it hits bottom limit switch and is moving in the same
@@ -146,7 +147,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     // Final call to set output
-    // elevatorMotor.set(output);
+    elevatorMotor.set(output);
 
     // SmartDashboard
     SmartDashboard.putNumber("[E] Enc", getEncoder());
